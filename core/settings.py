@@ -5,6 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 import os
 
+import dj_database_url
 from decouple import config
 from unipath import Path
 
@@ -76,15 +77,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'lessons_learned_db',
-    }
-    # 'default': dj_database_url.config(
-    #     # Feel free to alter this value to suit your needs.
-    #     default='postgresql://postgres:postgres@localhost:5432/mysite',
-    #     conn_max_age=600
-    # )
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': 'lessons_learned_db',
+    # }
+    'default': dj_database_url.config(
+        # Feel free to alter this value to suit your needs.
+        default='postgres://lessons_learned_db_user:kXdOlC2NJ1tYvSbHf01tCmstjGtiJc7t@dpg-cc657ala49936rka1upg-a/lessons_learned_db',
+        conn_max_age=600
+    )
 }
 
 # Password validation
