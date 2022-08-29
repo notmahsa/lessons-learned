@@ -41,42 +41,51 @@
                       <div class="col-md-3 px-md-1">
                         <div class="form-group">
                           <label>Username</label>
-                          {{ form.username }}
+                          {{ user_form.username }}
                         </div>
                       </div>
                     </div>
-                    <span class="text-danger">{{ form.username.errors }}</span>
+                    <span class="text-danger">{{ user_form.username.errors }}</span>
 
                     <div class="row">
                       <div class="col-md-3 px-md-1">
                         <div class="form-group">
                           <label>Email</label>
-                          {{ form.email }}
+                          {{ user_form.email }}
                         </div>
                       </div>
                     </div>
-                    <span class="text-danger">{{ form.email.errors }}</span>
+                    <span class="text-danger">{{ user_form.email.errors }}</span>
 
                     <div class="row">
                       <div class="col-md-3 px-md-1">
                         <div class="form-group">
                           <label>Password</label>
-                          {{ form.password1 }}
+                          {{ user_form.password1 }}
                         </div>
                       </div>
                     </div>
-                    <span class="text-danger">{{ form.password1.errors }}</span>
+                    <span class="text-danger">{{ user_form.password1.errors }}</span>
                     
                     <div class="row">
                         <div class="col-md-3 px-md-1">
                             <div class="form-group">
                             <label>Password Check</label>
-                            {{ form.password2 }}
+                            {{ user_form.password2 }}
                             </div>
                         </div>
                     </div>
-                    <span class="text-danger">{{ form.password2.errors }}</span>
+                    <span class="text-danger">{{ user_form.password2.errors }}</span>
 
+                    <div class="row">
+                        <div class="col-md-3 px-md-1">
+                            <div class="form-group">
+                                <label>Team</label>
+                                {{ account_form.team }}
+                            </div>
+                        </div>
+                    </div>
+                    <span class="text-danger">{{ account_form.team.errors }}</span>
                 </div>
                 <div class="card-footer">
                   <button type="submit" name="register" class="btn btn-fill btn-primary">Register</button>

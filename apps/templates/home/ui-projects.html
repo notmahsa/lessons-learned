@@ -1,0 +1,225 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Projects {% endblock %}
+{% block javascript %}
+<script>
+    $('#customer').change(function(){
+        var id = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: "/projects",
+            data: "project_id="+id,
+            success: function( data ) {
+                alert(data);
+
+                document.getElementById("show").innerHTML = data;
+            }
+        });
+    });
+    $("#friend-form").submit(function (e) {
+        // preventing from page reload and default actions
+        e.preventDefault();
+        // serialize the data for sending the form data.
+        var serializedData = $(this).serialize();
+        // make POST ajax call
+        $.ajax({
+            type: 'POST',
+            url: "{ url 'post_friend' }",
+            data: serializedData,
+            success: function (response) {
+                // on successfull creating object
+                // 1. clear the form.
+                $("#friend-form").trigger('reset');
+                // 2. focus to nickname input
+                $("#id_nick_name").focus();
+
+                // display the newly friend to table.
+                var instance = JSON.parse(response["instance"]);
+                var fields = instance[0]["fields"];
+                $("#my_friends tbody").prepend(
+                    `<tr>
+                    <td>${fields["nick_name"]||""}</td>
+                    <td>${fields["first_name"]||""}</td>
+                    <td>${fields["last_name"]||""}</td>
+                    <td>${fields["likes"]||""}</td>
+                    <td>${fields["dob"]||""}</td>
+                    <td>${fields["lives_in"]||""}</td>
+                    </tr>`
+                )
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    });
+</script>
+{% endblock javascript %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-primary" href="{% url 'create-project' %}">Create new project</a>
+        <div class="card ">
+            <div class="card-header">
+                <h4 class="card-title"> Projects</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter " id="">
+                        <thead class=" text-primary">
+                        <tr>
+                            <td>
+                                Project Id
+                            </td>
+                            <td>
+                                Title
+                            </td>
+                            <td>
+                                Team
+                            </td>
+                            <td>
+                                Budget
+                            </td>
+                            <td>
+                                Division
+                            </td>
+                            <td>
+                                Delivery Method
+                            </td>
+                            <td>
+                                Client
+                            </td>
+                            <td>
+                                Venture
+                            </td>
+                            <td>
+                                Structure
+                            </td>
+                            <td>
+                                Due Date
+                            </td>
+                            <td>
+                                NTP
+                            </td>
+                            <td>
+                                State
+                            </td>
+                            <td>
+                                Locality
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for project in project_list %}
+                        <tr>
+                            <td>
+                                <a class="btn btn-primary" href="{% url 'projects' %}{{ project.id }}">{{ project.clark_id }}</a>
+                            </td>
+                            <td>
+                                {{ project.title }}
+                            </td>
+                            <td>
+                                {{ project.team }}
+                            </td>
+                            <td>
+                                {{ project.budget }}
+                            </td>
+                            <td>
+                                {{ project.division }}
+                            </td>
+                            <td>
+                                {{ project.delivery_method }}
+                            </td>
+                            <td>
+                                {{ project.client }}
+                            </td>
+                            <td>
+                                {{ project.venture }}
+                            </td>
+                            <td>
+                                {{ project.structure }}
+                            </td>
+                            <td>
+                                {{ project.due }}
+                            </td>
+                            <td>
+                                {{ project.ntp }}
+                            </td>
+                            <td>
+                                {{ project.state }}
+                            </td>
+                            <td>
+                                {{ project.locality }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card  card-plain">
+            <div class="card-header">
+                <h4 class="card-title">Reports on Project</h4>
+                <p class="category">Non-admin users can only see reports approved by admin</p>
+            </div>
+            {% if selected.lessons.all|length > 0 %}
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter " id="reports">
+                        <thead class=" text-primary">
+                        <tr>
+                            <td>
+                                Title
+                            </td>
+                            <td>
+                                Phase
+                            </td>
+                            <td>
+                                Category
+                            </td>
+                            <th class="text-center">
+                                Impact
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for lesson in selected.lessons.all %}
+                        <tr>
+                            <td>
+                                <a class="btn btn-primary" href="{% url 'lesson' %}{{ lesson.id }}">{{ lesson.title }}</a>
+                            </td>
+                            <td>
+                                {{ lesson.project_phase }}
+                            </td>
+                            <td>
+                                {{ lesson.category }}
+                            </td>
+                            <td class="text-center">
+                                {{ lesson.impact }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <div class="card-body">
+                <p>No lessons submitted for this project yet</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

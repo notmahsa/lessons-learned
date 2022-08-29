@@ -1,0 +1,213 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Create New Lesson {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block comment %}
+{% block javascript %}
+<script>
+    $('#customer').change(function(){
+        var id = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: "page2.php",
+            data: "pass_id="+id,
+            success: function( data ) {
+                alert(data);
+
+                document.getElementById("show").innerHTML = data;
+            }
+        });
+    });
+    $("#friend-form").submit(function (e) {
+        // preventing from page reload and default actions
+        e.preventDefault();
+        // serialize the data for sending the form data.
+        var serializedData = $(this).serialize();
+        // make POST ajax call
+        $.ajax({
+            type: 'POST',
+            url: "{ url 'post_friend' }",
+            data: serializedData,
+            success: function (response) {
+                // on successfull creating object
+                // 1. clear the form.
+                $("#friend-form").trigger('reset');
+                // 2. focus to nickname input
+                $("#id_nick_name").focus();
+
+                // display the newly friend to table.
+                var instance = JSON.parse(response["instance"]);
+                var fields = instance[0]["fields"];
+                $("#my_friends tbody").prepend(
+                    `<tr>
+                    <td>${fields["nick_name"]||""}</td>
+                    <td>${fields["first_name"]||""}</td>
+                    <td>${fields["last_name"]||""}</td>
+                    <td>${fields["likes"]||""}</td>
+                    <td>${fields["dob"]||""}</td>
+                    <td>${fields["lives_in"]||""}</td>
+                    </tr>`
+                )
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    });
+</script>
+{% endblock javascript %}
+{% endblock comment %}
+
+{% block content %}
+
+<div class="row h-100">
+    <div class="col-md-8 h-100">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="title">Lesson Report</h5>
+                {% if msg %}
+                    <h6 class="card-category">
+                        {{ msg }}
+                    </h6>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <form action="{% url 'lesson' %}" method="post" id="lesson-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4 pr-md-1">
+                            <div class="form-group">
+                                <label>Title</label>
+                                {{ lesson.title }}
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-md-1">
+                            <div class="form-group">
+                                <label>Project</label>
+                                {{ lesson.project }}
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-4 pr-md-1">
+                            <div class="form-group">
+                                <label>Project phase</label>
+                                {{ lesson.project_phase }}
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-md-1">
+                            <div class="form-group">
+                                <label>Category</label>
+                                {{ lesson.category }}
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-md-1">
+                            <div class="form-group">
+                                <label>Impact</label>
+                                {{ lesson.impact }}
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12 px-md-3">
+                            <div class="form-group">
+                                <label>Report</label>
+                                <br/>
+                                {{ lesson.body }}
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row card-footer">
+                        {% if not success %}
+                        <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 h-100">
+        <div class="card card-user">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                <div class="author">
+                    <div class="block block-one"></div>
+                    <div class="block block-two"></div>
+                    <div class="block block-three"></div>
+                    <div class="block block-four"></div>
+                </div>
+                {% if success %}
+                <div class="card-header">
+                    <h5 class="title">Project Details</h5>
+                    {% if msg %}
+                    <h6 class="card-category">
+                        {{ msg }}
+                    </h6>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'lesson' %}" method="post" id="project">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4 pr-md-1">
+                                <div class="form-group">
+                                <div class="row"  class="col-md-12 px-md-1">
+                                    <label>Title</label>
+                                    <br/>{{ lesson.project.title }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Team</label>
+                                    <br/>{{ lesson.project.team }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Budget</label>
+                                    <br/>{{ lesson.project.budget }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Division</label>
+                                    <br/>{{ lesson.project.division }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Delivery Method</label>
+                                    <br/>{{ lesson.project.delivery_method }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Client</label>
+                                    <br/>{{ lesson.project.client }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Venture</label>
+                                    <br/>{{ lesson.project.venture }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Structure</label>
+                                    <br/>{{ lesson.project.structure }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>Due Date</label>
+                                    <br/>{{ lesson.project.due }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>NTP</label>
+                                    <br/>{{ lesson.project.ntp }}<br/>
+                                </div><div class="row"  class="col-md-12 px-md-1">
+                                    <label>US State</label>
+                                    <br/>{{ lesson.project.state }}<br/>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+                {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

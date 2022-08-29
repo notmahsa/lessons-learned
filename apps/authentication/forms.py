@@ -7,6 +7,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from apps.home.models import Account, Team
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -58,3 +60,11 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+class AccountForm(forms.ModelForm):
+    team = forms.ModelChoiceField(Team.objects.all(), empty_label=None)
+
+    class Meta:
+        model = Account
+        fields = ('team',)

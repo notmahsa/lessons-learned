@@ -3,10 +3,11 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from django.contrib.auth import authenticate, login
 # Create your views here.
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from .forms import LoginForm, SignUpForm
+
+from .forms import LoginForm, SignUpForm, AccountForm
 
 
 def login_view(request):
@@ -36,21 +37,21 @@ def register_user(request):
     success = False
 
     if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get("username")
-            raw_password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=raw_password)
-
-            msg = 'User created - please <a href="/login">login</a>.'
-            success = True
-
-            # return redirect("/login/")
+        user_form = SignUpForm(request.POST)
+        account_form = AccountForm(request.POST)
+        if all((user_form.is_valid(), account_form.is_valid())):
+            user = user_form.save()
+            account = account_form.save(commit=False)
+            account.user = user
+            print("account ", account.id, account.team.title, account.user.username)
+            account.save()
+            return redirect("/login/")
 
         else:
             msg = 'Form is not valid'
     else:
-        form = SignUpForm()
+        user_form = SignUpForm()
+        account_form = AccountForm()
 
-    return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
+    return render(request, "accounts/register.html",
+                  {"user_form": user_form, "account_form": account_form, "msg": msg, "success": success})

@@ -1,0 +1,17 @@
+[
+  {
+    "model": "home.project",
+    "pk": null,
+    "fields": {
+      "title": "Seattle Tacoma",
+      "clark_id": "LDZ123",
+      "budget": 50000,
+      "division": "Clark Civil",
+      "delivery_method": "Design-Build",
+      "client": "Pepsi",
+      "venture": "Good Ventures Inc",
+      "structure": "Process Piping",
+      "team": "454de1c6-fd2b-4d8e-9205-47d3e21734d1"
+    }
+  }
+]

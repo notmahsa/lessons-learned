@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Projects {% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-header">
+                <h4 class="card-title"> Projects</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter " id="">
+
+                        <tbody>
+                        <form action="{% url 'create-project' %}" method="post" id="project-form">
+                            {% csrf_token %}
+                            {{ project }}
+                            <div class="row card-footer">
+                                {% if not success %}
+                                <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

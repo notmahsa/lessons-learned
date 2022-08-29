@@ -1,0 +1,81 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Projects {% endblock %}
+{% block javascript %}
+
+{% endblock javascript %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-primary" href="{% url 'lesson' %}">Create new lesson</a>
+        <div class="card ">
+            <div class="card-header">
+                <h4 class="card-title"> Report</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter " id="">
+                        <thead class=" text-primary">
+                        <tr>
+                            <td>
+                                Title
+                            </td>
+                            <td>
+                                Author
+                            </td>
+                            <td>
+                                Project
+                            </td>
+                            <td>
+                                Phase
+                            </td>
+                            <td>
+                                Category
+                            </td>
+                            <td>
+                                Impact
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for lesson in lessons %}
+                        <tr>
+                            <td>
+                                <a class="btn btn-primary" href="{% url 'lesson' %}{{ lesson.id }}">{{ lesson.title }}</a>
+                            </td>
+                            <td>
+                                {{ lesson.title }}
+                            </td>
+                            <td>
+                                {{ lesson.author }}
+                            </td>
+                            <td>
+                                {{ lesson.project }}
+                            </td>
+                            <td>
+                                {{ lesson.project_phase }}
+                            </td>
+                            <td>
+                                {{ lesson.category }}
+                            </td>
+                            <td>
+                                {{ lesson.impact }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

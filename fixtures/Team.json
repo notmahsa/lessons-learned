@@ -1,0 +1,23 @@
+[
+  {
+    "model": "home.team",
+    "pk": "454de1c6-fd2b-4d8e-9205-47d3e21734d1",
+    "fields": {
+      "title": "Team Alpha"
+    }
+  },
+  {
+    "model": "home.team",
+    "pk": null,
+    "fields": {
+      "title": "Team Bravo"
+    }
+  },
+  {
+    "model": "home.team",
+    "pk": null,
+    "fields": {
+      "title": "Team Charlie"
+    }
+  }
+]
